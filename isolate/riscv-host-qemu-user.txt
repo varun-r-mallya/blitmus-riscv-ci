@@ -1,0 +1,25 @@
+qemu-riscv64 version 10.0.13 (Debian 1:10.0.13+ds-0+deb13u1)
+--- host code QEMU runs for amocas.d (helper_atomic_cmpxchgq_le) and amoswap.d (helper_atomic_xchgq_le)
+Dump of assembler code for function helper_atomic_cmpxchgq_le:
+   0x000000000031fef2 <+76>:	lr.d.aqrl	a0,(a1)
+   0x000000000031fefa <+84>:	sc.d.rl	a4,a3,(a1)
+Dump of assembler code for function helper_atomic_xchgq_le:
+   0x0000000000321f00 <+30>:	amoswap.d.aqrl	a0,a0,(a5)
+--- qemu-riscv64 -cpu rv64,zacas=true, max-delay=16
+plain         iters=2000000  (0,0)=42857  (0,1)=1039216  (1,0)=916482  (1,1)=1445  forbidden-if-ordered=42857
+fence         iters=2000000  (0,0)=0  (0,1)=908347  (1,0)=642830  (1,1)=448823  forbidden-if-ordered=0
+amocas        iters=2000000  (0,0)=1153  (0,1)=1224586  (1,0)=742667  (1,1)=31594  forbidden-if-ordered=1153
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=983106  (1,0)=534864  (1,1)=482030  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=994220  (1,0)=477160  (1,1)=528620  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=749  (0,1)=1129075  (1,0)=804789  (1,1)=65387  forbidden-if-ordered=749
+amoswap       iters=2000000  (0,0)=0  (0,1)=707412  (1,0)=666523  (1,1)=626065  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=547  (0,1)=1158423  (1,0)=772416  (1,1)=68614  forbidden-if-ordered=547
+--- qemu-riscv64 -cpu rv64,zacas=true, max-delay=64
+plain         iters=2000000  (0,0)=13838  (0,1)=1042728  (1,0)=942703  (1,1)=731  forbidden-if-ordered=13838
+fence         iters=2000000  (0,0)=0  (0,1)=844696  (1,0)=988297  (1,1)=167007  forbidden-if-ordered=0
+amocas        iters=2000000  (0,0)=246  (0,1)=1089465  (1,0)=893800  (1,1)=16489  forbidden-if-ordered=246
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=1000527  (1,0)=836079  (1,1)=163394  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=1017806  (1,0)=805989  (1,1)=176205  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=289  (0,1)=1060652  (1,0)=917773  (1,1)=21286  forbidden-if-ordered=289
+amoswap       iters=2000000  (0,0)=0  (0,1)=902840  (1,0)=875502  (1,1)=221658  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=255  (0,1)=1227089  (1,0)=752051  (1,1)=20605  forbidden-if-ordered=255

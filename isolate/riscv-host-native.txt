@@ -1,0 +1,15 @@
+isa		: rv64imafdcsu
+--- native, max-delay=16
+plain         iters=2000000  (0,0)=57455  (0,1)=1008346  (1,0)=931075  (1,1)=3124  forbidden-if-ordered=57455
+fence         iters=2000000  (0,0)=0  (0,1)=850398  (1,0)=615899  (1,1)=533703  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=981198  (1,0)=429349  (1,1)=589453  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=23023  (0,1)=1172793  (1,0)=775748  (1,1)=28436  forbidden-if-ordered=23023
+amoswap       iters=2000000  (0,0)=0  (0,1)=679691  (1,0)=590630  (1,1)=729679  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=9947  (0,1)=1136535  (1,0)=669937  (1,1)=183581  forbidden-if-ordered=9947
+--- native, max-delay=64
+plain         iters=2000000  (0,0)=18227  (0,1)=1019506  (1,0)=961456  (1,1)=811  forbidden-if-ordered=18227
+fence         iters=2000000  (0,0)=0  (0,1)=968529  (1,0)=851980  (1,1)=179491  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=1037518  (1,0)=784541  (1,1)=177941  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=6743  (0,1)=1088692  (1,0)=901597  (1,1)=2968  forbidden-if-ordered=6743
+amoswap       iters=2000000  (0,0)=0  (0,1)=893822  (1,0)=853286  (1,1)=252892  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=2143  (0,1)=1076524  (1,0)=863597  (1,1)=57736  forbidden-if-ordered=2143
