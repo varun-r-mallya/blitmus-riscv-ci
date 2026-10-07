@@ -1,0 +1,31 @@
+name: boot debug
+
+on:
+  workflow_dispatch:
+
+jobs:
+  boot:
+    runs-on: ubuntu-24.04-riscv
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install QEMU
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq qemu-system-misc >/dev/null
+          qemu-system-riscv64 --version
+          gunzip -kf kernel/Image.gz
+      - name: Boot with earlycon under each CPU model
+        shell: bash
+        run: |
+          for cpu in rv64 max "rv64,zacas=true"; do
+            for smp in 1 4; do
+              echo "::group::cpu=$cpu smp=$smp"
+              start=$(date +%s)
+              timeout 600 qemu-system-riscv64 -M virt -cpu "$cpu" -accel tcg,thread=multi \
+                -smp $smp -m 2G -nographic -no-reboot -kernel kernel/Image \
+                -append "earlycon=sbi console=ttyS0 panic=-1" 2>&1 | tail -40
+              echo "qemu exit=${PIPESTATUS[0]} after $(( $(date +%s) - start ))s"
+              echo "::endgroup::"
+            done
+          done

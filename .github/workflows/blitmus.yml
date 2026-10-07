@@ -36,12 +36,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run blitmus suite on the runner kernel
+        shell: bash
         env:
           ITER: ${{ inputs.iterations || '4100' }}
         run: bash ci/run-tests.sh 2>&1 | tee summary.txt
       - name: Collect logs
         if: always()
-        run: sudo chown -R "$(id -u)" logs 2>/dev/null; true
+        run: sudo chown -R "$(id -u)" logs 2>/dev/null || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -56,12 +57,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run blitmus suite under bpf-next in QEMU
+        shell: bash
         env:
           ITER: ${{ inputs.kernel_iterations || '400' }}
         run: bash ci/run-custom-kernel.sh 2>&1 | tee summary.txt
       - name: Collect logs
         if: always()
-        run: sudo chown -R "$(id -u)" logs 2>/dev/null; true
+        run: sudo chown -R "$(id -u)" logs 2>/dev/null || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
