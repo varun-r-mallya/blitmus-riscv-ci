@@ -10,14 +10,13 @@ on:
       kernel_iterations:
         description: "Iterations per test under the custom kernel in QEMU (x10000 executions)"
         default: "400"
+      runner_kernel_label:
+        description: "Also probe + run the suite on this label's own kernel (e.g. ubuntu-26.04-riscv, early access; not served to us so far)"
+        default: ""
 
 jobs:
   probe:
-    strategy:
-      fail-fast: false
-      matrix:
-        runner: [ubuntu-24.04-riscv, ubuntu-26.04-riscv]
-    runs-on: ${{ matrix.runner }}
+    runs-on: ubuntu-24.04-riscv
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -25,13 +24,29 @@ jobs:
         run: bash ci/probe.sh 2>&1 | tee probe.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: probe-${{ matrix.runner }}
+          name: probe-ubuntu-24.04-riscv
           path: probe.txt
 
   # The 24.04 pool runs Scaleway's 5.10 vendor kernel, which rejects these
-  # programs (no BPF atomics), so only try the runner kernel on 26.04.
+  # programs (no BPF atomics), so running on a runner's own kernel is opt-in
+  # for other labels only.  Jobs for a label RISE doesn't serve us stay queued
+  # until GitHub drops them (24h), which is why this is not on by default.
+  probe-other:
+    if: ${{ inputs.runner_kernel_label != '' }}
+    runs-on: ${{ inputs.runner_kernel_label }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe runner (CPU, kernel, privileges, BPF, KVM)
+        run: bash ci/probe.sh 2>&1 | tee probe.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: probe-${{ inputs.runner_kernel_label }}
+          path: probe.txt
+
   litmus:
-    runs-on: ubuntu-26.04-riscv
+    if: ${{ inputs.runner_kernel_label != '' }}
+    runs-on: ${{ inputs.runner_kernel_label }}
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4

@@ -9,7 +9,7 @@ native riscv64 hardware via the free [RISE RISC-V runners](https://riscv-runners
 - `ci/probe.sh` — dumps CPU/kernel/privilege/BPF/KVM info about the runner.
 - `ci/run-tests.sh` — runs the suite as root, via sudo, or in a privileged container.
 
-Trigger manually with a custom iteration count from the Actions tab (`workflow_dispatch`).
+Trigger manually from the Actions tab (`workflow_dispatch`) to change iteration counts, or set `runner_kernel_label` (e.g. `ubuntu-26.04-riscv`) to also run on that pool's own kernel. The 26.04 early-access pool has not picked up our jobs so far.
 
 ## Custom kernel
 
