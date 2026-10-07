@@ -1,0 +1,42 @@
+name: blitmus on riscv64
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      iterations:
+        description: "Iterations per test (x10000 executions)"
+        default: "4100"
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04-riscv
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe runner (CPU, kernel, privileges, BPF, KVM)
+        run: bash ci/probe.sh 2>&1 | tee probe.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: probe
+          path: probe.txt
+
+  litmus:
+    runs-on: ubuntu-24.04-riscv
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run blitmus suite
+        env:
+          ITER: ${{ inputs.iterations || '4100' }}
+        run: bash ci/run-tests.sh 2>&1 | tee summary.txt
+      - name: Collect logs
+        if: always()
+        run: sudo chown -R "$(id -u)" logs 2>/dev/null; true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: litmus-logs
+          path: |
+            summary.txt
+            logs/
