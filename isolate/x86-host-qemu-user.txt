@@ -1,0 +1,8 @@
+plain         iters=1000000  (0,0)=13905  (0,1)=492972  (1,0)=493123  (1,1)=0  forbidden-if-ordered=13905
+fence         iters=1000000  (0,0)=0  (0,1)=487424  (1,0)=489054  (1,1)=23522  forbidden-if-ordered=0
+amocas        iters=1000000  (0,0)=0  (0,1)=477353  (1,0)=512237  (1,1)=10410  forbidden-if-ordered=0
+amocas_fence  iters=1000000  (0,0)=0  (0,1)=491568  (1,0)=448722  (1,1)=59710  forbidden-if-ordered=0
+jit_lrsc      iters=1000000  (0,0)=0  (0,1)=454658  (1,0)=453133  (1,1)=92209  forbidden-if-ordered=0
+lrsc_aqrl     iters=1000000  (0,0)=0  (0,1)=453122  (1,0)=453545  (1,1)=93333  forbidden-if-ordered=0
+amoswap       iters=1000000  (0,0)=0  (0,1)=497258  (1,0)=496865  (1,1)=5877  forbidden-if-ordered=0
+gcc_cas       iters=1000000  (0,0)=0  (0,1)=456086  (1,0)=456385  (1,1)=87529  forbidden-if-ordered=0

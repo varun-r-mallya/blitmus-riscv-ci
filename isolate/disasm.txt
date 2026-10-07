@@ -1,0 +1,28 @@
+0000000000000ca2 <op_amocas>:
+ ca2:	4781                	li	a5,0
+ ca4:	872a                	mv	a4,a0
+ ca6:	4685                	li	a3,1
+ ca8:	2ed737af          	amocas.d.aqrl	a5,a3,(a4)
+ cac:	6188                	ld	a0,0(a1)
+ cae:	8082                	ret
+
+0000000000000cc2 <op_jit_lrsc>:
+ cc2:	87aa                	mv	a5,a0
+ cc4:	4705                	li	a4,1
+ cc6:	1007b6af          	lr.d	a3,(a5)
+ cca:	e681                	bnez	a3,cd2 <op_jit_lrsc+0x10>
+ ccc:	1ae7b62f          	sc.d.rl	a2,a4,(a5)
+ cd0:	fa7d                	bnez	a2,cc6 <op_jit_lrsc+0x4>
+ cd2:	0330000f          	fence	rw,rw
+ cd6:	6188                	ld	a0,0(a1)
+ cd8:	8082                	ret
+
+0000000000000cfa <op_gcc_cas>:
+ cfa:	4785                	li	a5,1
+ cfc:	1605372f          	lr.d.aqrl	a4,(a0)
+ d00:	e701                	bnez	a4,d08 <op_gcc_cas+0xe>
+ d02:	1af536af          	sc.d.rl	a3,a5,(a0)
+ d06:	fafd                	bnez	a3,cfc <op_gcc_cas+0x2>
+ d08:	6188                	ld	a0,0(a1)
+ d0a:	8082                	ret
+

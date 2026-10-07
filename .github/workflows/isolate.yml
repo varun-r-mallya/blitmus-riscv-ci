@@ -1,0 +1,32 @@
+name: isolate SB+cmpxchg
+
+on:
+  workflow_dispatch:
+    inputs:
+      iterations:
+        description: "Iterations per mode"
+        default: "2000000"
+
+jobs:
+  isolate:
+    runs-on: ubuntu-24.04-riscv
+    timeout-minutes: 240
+    env:
+      N: ${{ inputs.iterations || '2000000' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Native on the riscv host (no QEMU)
+        shell: bash
+        run: bash isolate/run-native.sh 2>&1 | tee native.txt
+      - name: Guest under qemu-riscv64 (user mode, no kernel, no BPF)
+        shell: bash
+        run: |
+          docker run --rm -v "$PWD:/w" -w /w -e N debian:trixie \
+            bash isolate/run-qemu-user.sh 2>&1 | tee qemu-user.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: isolate
+          path: |
+            native.txt
+            qemu-user.txt
