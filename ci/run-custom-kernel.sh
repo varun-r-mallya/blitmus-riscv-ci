@@ -39,7 +39,7 @@ if [ "$KVM" = 1 ]; then
 	echo ">>> booting custom kernel under KVM, $CPUS vCPUs"
 else
 	# -cpu max enables Zacas, which the riscv JIT needs for BPF arena.
-	accel=(--disable-kvm --qemu-opts "-cpu max")
+	accel=(--disable-kvm "--qemu-opts=-cpu max")
 	echo ">>> KVM unavailable: booting custom kernel under TCG, $CPUS vCPUs"
 fi
 
