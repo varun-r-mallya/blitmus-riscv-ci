@@ -1,19 +1,10 @@
 #!/bin/bash
-# Run the blitmus suite with whatever privilege route the runner offers:
-#   1. already root, 2. sudo, 3. a privileged docker container.
+# Run the blitmus suite on the runner's own kernel, with whatever privilege
+# route the runner offers: already root, sudo, or a privileged container.
 set -u
 cd "$(dirname "$0")/.."
 
-ITER=${ITER:-4100}
-
-# run.sh runs bin/* with defaults; honour ITER by wrapping each binary.
-if [ "$ITER" != 4100 ]; then
-	mkdir -p bin.real && mv bin/* bin.real/
-	for b in bin.real/*; do
-		printf '#!/bin/sh\nexec "%s" -i %s "$@"\n' "$PWD/$b" "$ITER" > "bin/$(basename "$b")"
-		chmod +x "bin/$(basename "$b")"
-	done
-fi
+bash ci/set-iterations.sh "${ITER:-4100}"
 
 if [ "$(id -u)" = 0 ]; then
 	echo ">>> running as root"

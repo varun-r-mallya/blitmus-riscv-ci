@@ -10,3 +10,10 @@ native riscv64 hardware via the free [RISE RISC-V runners](https://riscv-runners
 - `ci/run-tests.sh` — runs the suite as root, via sudo, or in a privileged container.
 
 Trigger manually with a custom iteration count from the Actions tab (`workflow_dispatch`).
+
+## Custom kernel
+
+The 24.04 runners run Scaleway's 5.10 vendor kernel (BPF JIT disabled, no BPF
+atomics), which can't load these programs. The `custom-kernel` job boots
+`kernel/Image.gz` (bpf-next, see `kernel/VERSION` and `kernel/config`) in QEMU
+on the riscv board with virtme-ng, under KVM if `/dev/kvm` works, else TCG.

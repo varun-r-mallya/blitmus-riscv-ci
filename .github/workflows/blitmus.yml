@@ -5,8 +5,11 @@ on:
   workflow_dispatch:
     inputs:
       iterations:
-        description: "Iterations per test (x10000 executions)"
+        description: "Iterations per test on the runner's own kernel (x10000 executions)"
         default: "4100"
+      kernel_iterations:
+        description: "Iterations per test under the custom kernel in QEMU (x10000 executions)"
+        default: "400"
 
 jobs:
   probe:
@@ -25,16 +28,14 @@ jobs:
           name: probe-${{ matrix.runner }}
           path: probe.txt
 
+  # The 24.04 pool runs Scaleway's 5.10 vendor kernel, which rejects these
+  # programs (no BPF atomics), so only try the runner kernel on 26.04.
   litmus:
-    strategy:
-      fail-fast: false
-      matrix:
-        runner: [ubuntu-24.04-riscv, ubuntu-26.04-riscv]
-    runs-on: ${{ matrix.runner }}
+    runs-on: ubuntu-26.04-riscv
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
-      - name: Run blitmus suite
+      - name: Run blitmus suite on the runner kernel
         env:
           ITER: ${{ inputs.iterations || '4100' }}
         run: bash ci/run-tests.sh 2>&1 | tee summary.txt
@@ -44,7 +45,28 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: litmus-logs-${{ matrix.runner }}
+          name: litmus-logs-runner-kernel
           path: |
             summary.txt
+            logs/
+
+  custom-kernel:
+    runs-on: ubuntu-24.04-riscv
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run blitmus suite under bpf-next in QEMU
+        env:
+          ITER: ${{ inputs.kernel_iterations || '400' }}
+        run: bash ci/run-custom-kernel.sh 2>&1 | tee summary.txt
+      - name: Collect logs
+        if: always()
+        run: sudo chown -R "$(id -u)" logs 2>/dev/null; true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: litmus-logs-custom-kernel
+          path: |
+            summary.txt
+            kvm-probe.txt
             logs/
