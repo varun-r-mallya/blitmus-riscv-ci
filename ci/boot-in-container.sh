@@ -13,7 +13,9 @@ vng --version
 echo "::endgroup::"
 
 # The riscv JIT only enables BPF arena with Zacas (cmpxchg128).
-if echo quit | qemu-system-riscv64 -M virt -cpu rv64,zacas=true -display none \
+if [ -n "${QEMU_CPU:-}" ]; then
+	CPU="$QEMU_CPU"
+elif echo quit | qemu-system-riscv64 -M virt -cpu rv64,zacas=true -display none \
 	-S -monitor stdio -serial none >/dev/null 2>&1; then
 	CPU="rv64,zacas=true"
 else

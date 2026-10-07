@@ -12,7 +12,16 @@ set -u
 cd "$(dirname "$0")/.."
 
 gunzip -kf kernel/Image.gz
+
+# Optionally restrict the suite to the named binaries.
+if [ -n "${TESTS:-}" ]; then
+	mkdir -p bin.skipped
+	for b in bin/*; do
+		case " $TESTS " in *" $(basename "$b") "*) ;; *) mv "$b" bin.skipped/ ;; esac
+	done
+	ls bin
+fi
 bash ci/set-iterations.sh "${ITER:-400}"
 
 exec docker run --rm --privileged -v "$PWD:/w" -w /w \
-	-e CPUS="${CPUS:-4}" debian:trixie bash ci/boot-in-container.sh
+	-e CPUS="${CPUS:-4}" -e QEMU_CPU="${QEMU_CPU:-}" debian:trixie bash ci/boot-in-container.sh

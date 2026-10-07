@@ -10,6 +10,12 @@ on:
       kernel_iterations:
         description: "Iterations per test under the custom kernel in QEMU (x10000 executions)"
         default: "400"
+      qemu_cpu:
+        description: "QEMU -cpu for the custom kernel (empty = rv64,zacas=true if supported, else rv64)"
+        default: ""
+      tests:
+        description: "Space-separated test binaries to run (empty = all)"
+        default: ""
       runner_kernel_label:
         description: "Also probe + run the suite on this label's own kernel (e.g. ubuntu-26.04-riscv, early access; not served to us so far)"
         default: ""
@@ -75,6 +81,8 @@ jobs:
         shell: bash
         env:
           ITER: ${{ inputs.kernel_iterations || '400' }}
+          QEMU_CPU: ${{ inputs.qemu_cpu }}
+          TESTS: ${{ inputs.tests }}
         run: bash ci/run-custom-kernel.sh 2>&1 | tee summary.txt
       - name: Collect logs
         if: always()
