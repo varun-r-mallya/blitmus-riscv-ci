@@ -10,7 +10,11 @@ on:
 
 jobs:
   probe:
-    runs-on: ubuntu-24.04-riscv
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04-riscv, ubuntu-26.04-riscv]
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
@@ -18,11 +22,15 @@ jobs:
         run: bash ci/probe.sh 2>&1 | tee probe.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: probe
+          name: probe-${{ matrix.runner }}
           path: probe.txt
 
   litmus:
-    runs-on: ubuntu-24.04-riscv
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04-riscv, ubuntu-26.04-riscv]
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +44,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: litmus-logs
+          name: litmus-logs-${{ matrix.runner }}
           path: |
             summary.txt
             logs/
