@@ -1,0 +1,54 @@
+--- qemu 10.0.13+ds-0+deb13u1 on arm64 Neoverse-N1, max-delay=16
+plain         iters=2000000  (0,0)=1795736  (0,1)=141642  (1,0)=62620  (1,1)=2  forbidden-if-ordered=1795736
+fence         iters=2000000  (0,0)=0  (0,1)=980632  (1,0)=368108  (1,1)=651260  forbidden-if-ordered=0
+amocas        iters=2000000  (0,0)=0  (0,1)=1000306  (1,0)=998228  (1,1)=1466  forbidden-if-ordered=0
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=959772  (1,0)=1020467  (1,1)=19761  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=618783  (1,0)=144361  (1,1)=1236856  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=0  (0,1)=1729913  (1,0)=269644  (1,1)=443  forbidden-if-ordered=0
+amoswap       iters=2000000  (0,0)=0  (0,1)=1010258  (1,0)=989262  (1,1)=480  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=0  (0,1)=1624290  (1,0)=375372  (1,1)=338  forbidden-if-ordered=0
+--- qemu 10.0.13+ds-0+deb13u1 on arm64 Neoverse-N1, max-delay=64
+plain         iters=2000000  (0,0)=697267  (0,1)=922015  (1,0)=380717  (1,1)=1  forbidden-if-ordered=697267
+fence         iters=2000000  (0,0)=0  (0,1)=991265  (1,0)=425197  (1,1)=583538  forbidden-if-ordered=0
+amocas        iters=2000000  (0,0)=0  (0,1)=1152565  (1,0)=819449  (1,1)=27986  forbidden-if-ordered=0
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=1082935  (1,0)=871234  (1,1)=45831  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=963598  (1,0)=286258  (1,1)=750144  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=0  (0,1)=1443251  (1,0)=556398  (1,1)=351  forbidden-if-ordered=0
+amoswap       iters=2000000  (0,0)=0  (0,1)=1095083  (1,0)=904524  (1,1)=393  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=0  (0,1)=1465384  (1,0)=533980  (1,1)=636  forbidden-if-ordered=0
+--- qemu 11.1.2+ds-2 on arm64 Neoverse-N1, max-delay=16
+plain         iters=2000000  (0,0)=889641  (0,1)=553772  (1,0)=556570  (1,1)=17  forbidden-if-ordered=889641
+fence         iters=2000000  (0,0)=0  (0,1)=921470  (1,0)=493875  (1,1)=584655  forbidden-if-ordered=0
+amocas        iters=2000000  (0,0)=0  (0,1)=999797  (1,0)=1000084  (1,1)=119  forbidden-if-ordered=0
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=999778  (1,0)=999640  (1,1)=582  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=1921447  (1,0)=44678  (1,1)=33875  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=0  (0,1)=1735169  (1,0)=262026  (1,1)=2805  forbidden-if-ordered=0
+amoswap       iters=2000000  (0,0)=0  (0,1)=1000498  (1,0)=999311  (1,1)=191  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=0  (0,1)=1866056  (1,0)=58290  (1,1)=75654  forbidden-if-ordered=0
+--- qemu 11.1.2+ds-2 on arm64 Neoverse-N1, max-delay=64
+plain         iters=2000000  (0,0)=453573  (0,1)=945790  (1,0)=600637  (1,1)=0  forbidden-if-ordered=453573
+fence         iters=2000000  (0,0)=0  (0,1)=1090168  (1,0)=669394  (1,1)=240438  forbidden-if-ordered=0
+amocas        iters=2000000  (0,0)=0  (0,1)=1091948  (1,0)=876406  (1,1)=31646  forbidden-if-ordered=0
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=1109632  (1,0)=836334  (1,1)=54034  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=1387117  (1,0)=490157  (1,1)=122726  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=0  (0,1)=1439837  (1,0)=538310  (1,1)=21853  forbidden-if-ordered=0
+amoswap       iters=2000000  (0,0)=0  (0,1)=1151698  (1,0)=845054  (1,1)=3248  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=0  (0,1)=1434088  (1,0)=563833  (1,1)=2079  forbidden-if-ordered=0
+--- qemu 10.0.13, cas8 forced to ldaxr/stlxr (non-LSE arm64 path), max-delay=16
+plain         iters=2000000  (0,0)=1786220  (0,1)=123134  (1,0)=90646  (1,1)=0  forbidden-if-ordered=1786220
+amocas        iters=2000000  (0,0)=1987999  (0,1)=9879  (1,0)=1899  (1,1)=223  forbidden-if-ordered=1987999
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=819558  (1,0)=34512  (1,1)=1145930  forbidden-if-ordered=0
+amoswap       iters=2000000  (0,0)=0  (0,1)=1008983  (1,0)=990727  (1,1)=290  forbidden-if-ordered=0
+--- qemu 10.0.13, cas8 forced to ldaxr/stlxr (non-LSE arm64 path), max-delay=64
+plain         iters=2000000  (0,0)=618403  (0,1)=950967  (1,0)=430629  (1,1)=1  forbidden-if-ordered=618403
+amocas        iters=2000000  (0,0)=813794  (0,1)=786318  (1,0)=399790  (1,1)=98  forbidden-if-ordered=813794
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=952936  (1,0)=337241  (1,1)=709823  forbidden-if-ordered=0
+amoswap       iters=2000000  (0,0)=0  (0,1)=1106439  (1,0)=858483  (1,1)=35078  forbidden-if-ordered=0
+
+# Host: Oracle Ampere (Neoverse-N1, LSE atomics), Ubuntu 24.04; Debian static qemu-user 10.0.13 / 11.1.2.
+# helper_atomic_cmpxchgq_le -> __aarch64_cas8_acq_rel (libgcc outline atomics):
+#   LSE present: casal                       -> fully ordered, amocas OK
+#   no LSE:      ldaxr; cmp; b.ne; stlxr; cbnz (no dmb) -> NOT fully ordered
+# "forced" runs: a copy of qemu-riscv64 10.0.13 with the cbz at 0x5676c8 in
+# __aarch64_cas8_acq_rel patched to an unconditional b (bytes 03 00 00 14), i.e.
+# what a non-LSE arm64 host (e.g. Cortex-A72) executes.
