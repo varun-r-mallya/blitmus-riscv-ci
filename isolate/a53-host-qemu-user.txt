@@ -1,0 +1,25 @@
+--- qemu 10.0.13 on Cortex-A53 (no LSE), max-delay=16
+plain         iters=2000000  (0,0)=5885  (0,1)=1011906  (1,0)=982206  (1,1)=3  forbidden-if-ordered=5885
+fence         iters=2000000  (0,0)=0  (0,1)=993634  (1,0)=820918  (1,1)=185448  forbidden-if-ordered=0
+amocas        iters=2000000  (0,0)=0  (0,1)=978787  (1,0)=721056  (1,1)=300157  forbidden-if-ordered=0
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=947609  (1,0)=668028  (1,1)=384363  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=897890  (1,0)=651922  (1,1)=450188  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=0  (0,1)=912448  (1,0)=683150  (1,1)=404402  forbidden-if-ordered=0
+amoswap       iters=2000000  (0,0)=0  (0,1)=933236  (1,0)=729758  (1,1)=337006  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=0  (0,1)=911056  (1,0)=694555  (1,1)=394389  forbidden-if-ordered=0
+--- qemu 10.0.13 on Cortex-A53 (no LSE), max-delay=64
+plain         iters=2000000  (0,0)=33191  (0,1)=979041  (1,0)=987767  (1,1)=1  forbidden-if-ordered=33191
+fence         iters=2000000  (0,0)=0  (0,1)=1000652  (1,0)=944370  (1,1)=54978  forbidden-if-ordered=0
+amocas        iters=2000000  (0,0)=0  (0,1)=1000264  (1,0)=912260  (1,1)=87476  forbidden-if-ordered=0
+amocas_fence  iters=2000000  (0,0)=0  (0,1)=987451  (1,0)=899948  (1,1)=112601  forbidden-if-ordered=0
+jit_lrsc      iters=2000000  (0,0)=0  (0,1)=970096  (1,0)=898142  (1,1)=131762  forbidden-if-ordered=0
+lrsc_aqrl     iters=2000000  (0,0)=0  (0,1)=980551  (1,0)=901883  (1,1)=117566  forbidden-if-ordered=0
+amoswap       iters=2000000  (0,0)=0  (0,1)=988444  (1,0)=908842  (1,1)=102714  forbidden-if-ordered=0
+gcc_cas       iters=2000000  (0,0)=0  (0,1)=981361  (1,0)=901936  (1,1)=116703  forbidden-if-ordered=0
+
+# Host: Raspberry Pi (Cortex-A53, in-order, NO LSE: Features fp asimd evtstrm crc32 cpuid),
+# Debian 13, kernel 6.12.75+rpt-rpi-v8; unmodified Debian static qemu-user 10.0.13.
+# With no HWCAP_ATOMICS, __aarch64_cas8_acq_rel takes the ldaxr/stlxr path -- the same
+# code that broke amocas on Neoverse-N1 when forced -- yet amocas stays at 0 here.
+# The reordering is architecturally allowed but this in-order core doesn't perform it
+# (plain SB still shows, so the harness is sensitive).
